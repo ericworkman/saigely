@@ -1,6 +1,5 @@
 # Saigely
 
-
 This is a little project that attempts to simulate a table top role playing game using AI, specifically OpenAI and Replicate (stable diffusion xl).
 Big shoutout to Charlie Holtz and his [Building AI Apps with Elixir](https://www.charlieholtz.com/articles/elixir-conf-2023) talk.
 That talk and his [Shinstagram](https://github.com/cbh123/shinstagram) project heavily inspired and helped me build Saigely.
@@ -21,6 +20,20 @@ Of course there's more to a real game, but this is pretty good for a showing off
 
 ## Getting Started
 
+This project relies upon OpenAI, Replicate, and Cloudflare R2.
+Set the various API keys and configuration options via env vars.
+I like to use direnv with a .envrc containing
+
+```bash
+export OPENAI_API_KEY=
+export OPENAI_ORG=
+export REPLICATE_API_TOKEN=
+export CLOUDFLARE_ACCESS_KEY_ID=
+export CLOUDFLARE_SECRET_ACCESS_KEY=
+export BUCKET_NAME=saigely
+export CLOUDFLARE_PUBLIC_URL=https://somestorage.atadomain.com
+```
+
 To start your Phoenix server:
 
   * Run `mix setup` to install and setup dependencies
@@ -28,10 +41,12 @@ To start your Phoenix server:
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
-You'll want to generate at least 1 if not 2-3 characters and set one's duty to GM.
+You'll want to generate at least 1 if not 2-3 characters.
 
 `Saigely.Characters.gen_character()`
 
 or if you want to influence the character creation process
 
 `Saigely.Characters.gen_character("grizzled veteran with a soft spot for dogs")`
+
+Set one character's duty to "gm" in the [`character list`](http://localhost:4000/characters)
