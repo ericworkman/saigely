@@ -1,0 +1,36 @@
+<div>
+  <.outline_button phx-click="start-encounter">Start 🤺</.outline_button>
+  <.outline_button phx-click="sleep">Cast 💤</.outline_button>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2">
+  <div id="posts" phx-update="stream" class="space-y-8 mt-12 max-w-2xl mx-auto">
+    <div :for={{id, post} <- @streams.posts} id={id}>
+      <.live_component
+        module={SaigelyWeb.PostLive.PostComponent}
+        id={id}
+        post={post}
+        character={post.character}
+        patch={~p"/"}
+      />
+    </div>
+  </div>
+
+  <.live_component
+    module={SaigelyWeb.LogsComponent}
+    id="logs"
+    logs={@streams.logs}
+    show_names={true}
+  />
+</div>
+
+<.modal :if={@live_action in [:new, :edit]} id="post-modal" show on_cancel={JS.patch(~p"/")}>
+  <.live_component
+    module={SaigelyWeb.PostLive.FormComponent}
+    id={@post.id || :new}
+    title={@page_title}
+    action={@live_action}
+    post={@post}
+    patch={~p"/"}
+  />
+</.modal>

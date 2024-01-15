@@ -1,0 +1,50 @@
+<.header>
+  Listing Characters
+  <:actions>
+    <.link patch={~p"/characters/new"}>
+      <.button>New Character</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="characters"
+  rows={@streams.characters}
+  row_click={fn {_id, character} -> JS.navigate(~p"/characters/#{character.username}") end}
+>
+  <:col :let={{_id, character}} label="Name"><%= character.name %></:col>
+  <:col :let={{_id, character}} label="Avatar">
+    <img src={character.avatar} class="rounded-full h-12 w-12" />
+  </:col>
+  <:col :let={{_id, character}} label="Username"><%= character.username %></:col>
+  <:col :let={{_id, character}} label="Role"><%= character.role %></:col>
+  <:col :let={{_id, character}} label="Desire"><%= character.desire %></:col>
+  <:col :let={{_id, character}} label="Vibe"><%= character.vibe %></:col>
+  <:col :let={{_id, character}} label="Duty"><%= character.duty %></:col>
+  <:col :let={{_id, character}} label="Pid"><%= character.pid %></:col>
+  <:action :let={{_id, character}}>
+    <div class="sr-only">
+      <.link navigate={~p"/characters/#{character.username}"}>Show</.link>
+    </div>
+    <.link patch={~p"/characters/#{character.username}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, character}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: character.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal :if={@live_action in [:new, :edit]} id="character-modal" show on_cancel={JS.patch(~p"/characters")}>
+  <.live_component
+    module={SaigelyWeb.CharacterLive.FormComponent}
+    id={@character.id || :new}
+    title={@page_title}
+    action={@live_action}
+    character={@character}
+    patch={~p"/characters"}
+  />
+</.modal>
